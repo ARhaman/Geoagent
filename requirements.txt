@@ -1,0 +1,10 @@
+torch>=2.0
+torchvision>=0.15
+numpy>=1.23
+Pillow>=9.0
+scikit-image>=0.19
+scipy>=1.9
+pandas>=1.5
+matplotlib>=3.6
+anthropic>=0.30
+tqdm>=4.64
