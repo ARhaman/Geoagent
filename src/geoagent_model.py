@@ -1,24 +1,10 @@
-"""
-geoagent_model.py
-==================
-Pix2Pix architecture for bidirectional reservoir property translation.
-
-Components:
-  - UNetGenerator          : U-Net with skip connections (256x256)
-  - PatchGANDiscriminator  : 70x70 PatchGAN discriminator
-  - Pix2PixModel           : Wraps both + loss functions
-
-Author: Abdulrahman Al-Fakih
-"""
-
+"""geoagent_model.py -- Pix2Pix (U-Net generator + 70x70 PatchGAN) for GeoAgent.
+Layer names (e1..e8, d1..d8) match the released/trained checkpoints (pix2pix_{AB,BA}_ep0100.pth).
+Supersedes the earlier version of this file, whose layer names (enc*/dec*) could not load the checkpoints."""
 import torch
 import torch.nn as nn
 
-
-# ── Building Blocks ──────────────────────────────────────────────────────────
-
 class ConvNormReLU(nn.Module):
-    """Conv2d -> Norm -> Activation block."""
     def __init__(self, in_ch, out_ch, kernel=4, stride=2, padding=1,
                  norm="batch", activation="leaky", transpose=False):
         super().__init__()
@@ -28,262 +14,137 @@ class ConvNormReLU(nn.Module):
             layers.append(nn.ConvTranspose2d(in_ch, out_ch, kernel, stride, padding, bias=bias))
         else:
             layers.append(nn.Conv2d(in_ch, out_ch, kernel, stride, padding, bias=bias))
-        if norm == "batch":
-            layers.append(nn.BatchNorm2d(out_ch))
-        elif norm == "instance":
-            layers.append(nn.InstanceNorm2d(out_ch))
-        if activation == "leaky":
-            layers.append(nn.LeakyReLU(0.2, inplace=False))
-        elif activation == "relu":
-            layers.append(nn.ReLU(inplace=False))
-        elif activation == "tanh":
-            layers.append(nn.Tanh())
+        if norm == "batch":      layers.append(nn.BatchNorm2d(out_ch))
+        elif norm == "instance": layers.append(nn.InstanceNorm2d(out_ch))
+        if activation == "leaky": layers.append(nn.LeakyReLU(0.2, inplace=False))
+        elif activation == "relu": layers.append(nn.ReLU(inplace=False))
+        elif activation == "tanh": layers.append(nn.Tanh())
         self.block = nn.Sequential(*layers)
-
-    def forward(self, x):
-        return self.block(x)
-
-
-# ── U-Net Generator ──────────────────────────────────────────────────────────
+    def forward(self, x): return self.block(x)
 
 class UNetGenerator(nn.Module):
-    """
-    U-Net generator for image-to-image translation.
-    8 encoder + 8 decoder blocks with skip connections.
-    Input/Output: (B, 3, 256, 256)
-    """
-
-    def __init__(self, in_channels=3, out_channels=3, ngf=64, norm="batch", dropout=True):
+    def __init__(self, in_ch=3, out_ch=3, ngf=64, norm="batch"):
         super().__init__()
-
-        # Encoder — halves spatial dims each step
-        self.enc1 = nn.Conv2d(in_channels, ngf, 4, 2, 1, bias=False)    # 128
-        self.enc2 = ConvNormReLU(ngf,    ngf*2, norm=norm)               # 64
-        self.enc3 = ConvNormReLU(ngf*2,  ngf*4, norm=norm)               # 32
-        self.enc4 = ConvNormReLU(ngf*4,  ngf*8, norm=norm)               # 16
-        self.enc5 = ConvNormReLU(ngf*8,  ngf*8, norm=norm)               # 8
-        self.enc6 = ConvNormReLU(ngf*8,  ngf*8, norm=norm)               # 4
-        self.enc7 = ConvNormReLU(ngf*8,  ngf*8, norm=norm)               # 2
-        self.enc8 = nn.Sequential(
+        # Encoder
+        self.e1 = nn.Conv2d(in_ch, ngf, 4, 2, 1, bias=False)
+        self.e2 = ConvNormReLU(ngf,   ngf*2, norm=norm)
+        self.e3 = ConvNormReLU(ngf*2, ngf*4, norm=norm)
+        self.e4 = ConvNormReLU(ngf*4, ngf*8, norm=norm)
+        self.e5 = ConvNormReLU(ngf*8, ngf*8, norm=norm)
+        self.e6 = ConvNormReLU(ngf*8, ngf*8, norm=norm)
+        self.e7 = ConvNormReLU(ngf*8, ngf*8, norm=norm)
+        self.e8 = nn.Sequential(
             nn.LeakyReLU(0.2, inplace=False),
-            nn.Conv2d(ngf*8, ngf*8, 4, 2, 1, bias=False),               # 1
-        )
-
-        # Decoder — doubles spatial dims, skip-connects from encoder
-        self.dec8 = self._dec(ngf*8,   ngf*8,  drop=True,  norm=norm)   # 2
-        self.dec7 = self._dec(ngf*16,  ngf*8,  drop=True,  norm=norm)   # 4
-        self.dec6 = self._dec(ngf*16,  ngf*8,  drop=True,  norm=norm)   # 8
-        self.dec5 = self._dec(ngf*16,  ngf*8,  drop=False, norm=norm)   # 16
-        self.dec4 = self._dec(ngf*16,  ngf*4,  drop=False, norm=norm)   # 32
-        self.dec3 = self._dec(ngf*8,   ngf*2,  drop=False, norm=norm)   # 64
-        self.dec2 = self._dec(ngf*4,   ngf,    drop=False, norm=norm)   # 128
-        self.dec1 = nn.Sequential(
+            nn.Conv2d(ngf*8, ngf*8, 4, 2, 1, bias=False))
+        # Decoder
+        self.d8 = self._dec(ngf*8,  ngf*8,  drop=True,  norm=norm)
+        self.d7 = self._dec(ngf*16, ngf*8,  drop=True,  norm=norm)
+        self.d6 = self._dec(ngf*16, ngf*8,  drop=True,  norm=norm)
+        self.d5 = self._dec(ngf*16, ngf*8,  drop=False, norm=norm)
+        self.d4 = self._dec(ngf*16, ngf*4,  drop=False, norm=norm)
+        self.d3 = self._dec(ngf*8,  ngf*2,  drop=False, norm=norm)
+        self.d2 = self._dec(ngf*4,  ngf,    drop=False, norm=norm)
+        self.d1 = nn.Sequential(
             nn.ReLU(inplace=False),
-            nn.ConvTranspose2d(ngf*2, out_channels, 4, 2, 1, bias=False), # 256
-            nn.Tanh(),
-        )
-
+            nn.ConvTranspose2d(ngf*2, out_ch, 4, 2, 1, bias=False),
+            nn.Tanh())
     @staticmethod
     def _dec(in_ch, out_ch, drop=False, norm="batch"):
-        layers = [
-            nn.ReLU(inplace=False),
-            nn.ConvTranspose2d(in_ch, out_ch, 4, 2, 1, bias=False),
-        ]
-        if norm == "batch":
-            layers.append(nn.BatchNorm2d(out_ch))
-        elif norm == "instance":
-            layers.append(nn.InstanceNorm2d(out_ch))
-        if drop:
-            layers.append(nn.Dropout(0.5))
+        layers = [nn.ReLU(inplace=False),
+                  nn.ConvTranspose2d(in_ch, out_ch, 4, 2, 1, bias=False)]
+        if norm == "batch":      layers.append(nn.BatchNorm2d(out_ch))
+        elif norm == "instance": layers.append(nn.InstanceNorm2d(out_ch))
+        if drop: layers.append(nn.Dropout(0.5))
         return nn.Sequential(*layers)
-
     def forward(self, x):
-        e1 = self.enc1(x)
-        e2 = self.enc2(e1)
-        e3 = self.enc3(e2)
-        e4 = self.enc4(e3)
-        e5 = self.enc5(e4)
-        e6 = self.enc6(e5)
-        e7 = self.enc7(e6)
-        e8 = self.enc8(e7)
-
-        d8 = self.dec8(e8)
-        d7 = self.dec7(torch.cat([d8, e7], 1))
-        d6 = self.dec6(torch.cat([d7, e6], 1))
-        d5 = self.dec5(torch.cat([d6, e5], 1))
-        d4 = self.dec4(torch.cat([d5, e4], 1))
-        d3 = self.dec3(torch.cat([d4, e3], 1))
-        d2 = self.dec2(torch.cat([d3, e2], 1))
-        return self.dec1(torch.cat([d2, e1], 1))
-
-
-# ── PatchGAN Discriminator ────────────────────────────────────────────────────
+        e1=self.e1(x); e2=self.e2(e1); e3=self.e3(e2); e4=self.e4(e3)
+        e5=self.e5(e4); e6=self.e6(e5); e7=self.e7(e6); e8=self.e8(e7)
+        d8=self.d8(e8)
+        d7=self.d7(torch.cat([d8,e7],1))
+        d6=self.d6(torch.cat([d7,e6],1))
+        d5=self.d5(torch.cat([d6,e5],1))
+        d4=self.d4(torch.cat([d5,e4],1))
+        d3=self.d3(torch.cat([d4,e3],1))
+        d2=self.d2(torch.cat([d3,e2],1))
+        return self.d1(torch.cat([d2,e1],1))
 
 class PatchGANDiscriminator(nn.Module):
-    """
-    70x70 PatchGAN: classifies 70x70 overlapping patches as real/fake.
-    Input: concat(real_A, real_B_or_fake_B) → shape (B, 6, H, W)
-    """
-
-    def __init__(self, in_channels=6, ndf=64, n_layers=3, norm="batch"):
+    def __init__(self, in_ch=6, ndf=64, n_layers=3, norm="batch"):
         super().__init__()
         NL = nn.BatchNorm2d if norm == "batch" else nn.InstanceNorm2d
-        seq = [nn.Conv2d(in_channels, ndf, 4, 2, 1, bias=False),
-               nn.LeakyReLU(0.2, inplace=False)]
+        seq = [nn.Conv2d(in_ch,ndf,4,2,1,bias=False), nn.LeakyReLU(0.2,inplace=False)]
         ch = ndf
         for n in range(1, n_layers):
-            ch_prev, ch = ch, min(ch * 2, 512)
-            stride = 1 if n == n_layers - 1 else 2
-            seq += [nn.Conv2d(ch_prev, ch, 4, stride, 1, bias=False), NL(ch),
-                    nn.LeakyReLU(0.2, inplace=False)]
-        ch2 = min(ch * 2, 512)
-        seq += [nn.Conv2d(ch, ch2, 4, 1, 1, bias=False), NL(ch2),
-                nn.LeakyReLU(0.2, inplace=False),
-                nn.Conv2d(ch2, 1, 4, 1, 1)]
+            ch_prev, ch = ch, min(ch*2, 512)
+            stride = 1 if n == n_layers-1 else 2
+            seq += [nn.Conv2d(ch_prev,ch,4,stride,1,bias=False), NL(ch),
+                    nn.LeakyReLU(0.2,inplace=False)]
+        ch2 = min(ch*2, 512)
+        seq += [nn.Conv2d(ch,ch2,4,1,1,bias=False), NL(ch2),
+                nn.LeakyReLU(0.2,inplace=False),
+                nn.Conv2d(ch2,1,4,1,1)]
         self.model = nn.Sequential(*seq)
-
     def forward(self, inp, tgt):
-        return self.model(torch.cat([inp, tgt], 1))
-
-
-# ── Full Pix2Pix Model ────────────────────────────────────────────────────────
+        return self.model(torch.cat([inp,tgt],1))
 
 class Pix2PixModel:
-    """
-    Pix2Pix training wrapper (not an nn.Module — manages two networks + optimizers).
-
-    Usage:
-        model = Pix2PixModel(device=device)
-        losses = model.train_step(real_A, real_B)
-        fake_B = model.predict(real_A)
-    """
-
-    def __init__(
-        self,
-        device,
-        in_channels: int = 3,
-        out_channels: int = 3,
-        ngf: int = 64,
-        ndf: int = 64,
-        lambda_l1: float = 100.0,
-        norm: str = "batch",
-        lr: float = 2e-4,
-        beta1: float = 0.5,
-    ):
+    def __init__(self, device, in_ch=3, out_ch=3, ngf=64, ndf=64,
+                 lambda_l1=100.0, norm="batch", lr=2e-4, beta1=0.5, in_channels=None, out_channels=None):
+        if in_channels is not None: in_ch = in_channels
+        if out_channels is not None: out_ch = out_channels
         self.device = device
         self.lambda_l1 = lambda_l1
-
-        self.G = UNetGenerator(in_channels, out_channels, ngf, norm).to(device)
-        self.D = PatchGANDiscriminator(in_channels + out_channels, ndf, norm=norm).to(device)
-
-        self.criterion_GAN = nn.BCEWithLogitsLoss()
-        self.criterion_L1  = nn.L1Loss()
-
-        self.opt_G = torch.optim.Adam(self.G.parameters(), lr=lr, betas=(beta1, 0.999))
-        self.opt_D = torch.optim.Adam(self.D.parameters(), lr=lr, betas=(beta1, 0.999))
-
-        # LR schedulers (linear decay after epoch 100)
-        self.sched_G = torch.optim.lr_scheduler.LambdaLR(
-            self.opt_G, lr_lambda=lambda e: max(0.0, 1.0 - max(0, e - 100) / 100.0))
-        self.sched_D = torch.optim.lr_scheduler.LambdaLR(
-            self.opt_D, lr_lambda=lambda e: max(0.0, 1.0 - max(0, e - 100) / 100.0))
-
+        self.G = UNetGenerator(in_ch, out_ch, ngf, norm).to(device)
+        self.D = PatchGANDiscriminator(in_ch+out_ch, ndf, norm=norm).to(device)
+        self.cGAN = nn.BCEWithLogitsLoss()
+        self.cL1  = nn.L1Loss()
+        self.oG = torch.optim.Adam(self.G.parameters(), lr=lr, betas=(beta1,0.999))
+        self.oD = torch.optim.Adam(self.D.parameters(), lr=lr, betas=(beta1,0.999))
+        self.sG = torch.optim.lr_scheduler.LambdaLR(
+            self.oG, lambda e: max(0.0, 1.0-max(0,e-100)/100.0))
+        self.sD = torch.optim.lr_scheduler.LambdaLR(
+            self.oD, lambda e: max(0.0, 1.0-max(0,e-100)/100.0))
         self._init_weights()
-
     def _init_weights(self):
-        for m in list(self.G.modules()) + list(self.D.modules()):
-            if isinstance(m, (nn.Conv2d, nn.ConvTranspose2d)):
-                nn.init.normal_(m.weight, 0.0, 0.02)
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
-            elif isinstance(m, (nn.BatchNorm2d, nn.InstanceNorm2d)):
-                if m.weight is not None:
-                    nn.init.normal_(m.weight, 1.0, 0.02)
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
-
-    def _requires_grad(self, net, flag: bool):
-        for p in net.parameters():
-            p.requires_grad = flag
-
-    def train_step(self, real_A: torch.Tensor, real_B: torch.Tensor) -> dict:
-        """
-        One full forward + backward pass.
-        real_A: input  (B, 3, 256, 256) in [-1, 1]
-        real_B: target (B, 3, 256, 256) in [-1, 1]
-        Returns dict of scalar losses.
-        """
-        real_A = real_A.to(self.device)
-        real_B = real_B.to(self.device)
-        fake_B = self.G(real_A)
-
-        # Update D
-        self._requires_grad(self.D, True)
-        self.opt_D.zero_grad()
-        pred_fake = self.D(real_A, fake_B.detach())
-        pred_real = self.D(real_A, real_B)
-        loss_D = 0.5 * (
-            self.criterion_GAN(pred_fake, torch.zeros_like(pred_fake)) +
-            self.criterion_GAN(pred_real,  torch.ones_like(pred_real))
-        )
-        loss_D.backward()
-        self.opt_D.step()
-
-        # Update G
-        self._requires_grad(self.D, False)
-        self.opt_G.zero_grad()
-        pred_fake_G = self.D(real_A, fake_B)
-        loss_G_gan = self.criterion_GAN(pred_fake_G, torch.ones_like(pred_fake_G))
-        loss_G_l1  = self.criterion_L1(fake_B, real_B) * self.lambda_l1
-        loss_G = loss_G_gan + loss_G_l1
-        loss_G.backward()
-        self.opt_G.step()
-
-        return {
-            "loss_G": loss_G.item(),
-            "loss_G_gan": loss_G_gan.item(),
-            "loss_G_l1": loss_G_l1.item(),
-            "loss_D": loss_D.item(),
-        }
-
+        for m in list(self.G.modules())+list(self.D.modules()):
+            if isinstance(m,(nn.Conv2d,nn.ConvTranspose2d)):
+                nn.init.normal_(m.weight,0.0,0.02)
+                if m.bias is not None: nn.init.zeros_(m.bias)
+            elif isinstance(m,(nn.BatchNorm2d,nn.InstanceNorm2d)):
+                if m.weight is not None: nn.init.normal_(m.weight,1.0,0.02)
+                if m.bias  is not None: nn.init.zeros_(m.bias)
+    def _rg(self, net, flag):
+        for p in net.parameters(): p.requires_grad = flag
+    def train_step(self, rA, rB):
+        rA, rB = rA.to(self.device), rB.to(self.device)
+        fB = self.G(rA)
+        self._rg(self.D, True); self.oD.zero_grad()
+        pf = self.D(rA, fB.detach())
+        pr = self.D(rA, rB)
+        lD = 0.5*(self.cGAN(pf,torch.zeros_like(pf))+self.cGAN(pr,torch.ones_like(pr)))
+        lD.backward(); self.oD.step()
+        self._rg(self.D, False); self.oG.zero_grad()
+        pg  = self.D(rA, fB)
+        lGg = self.cGAN(pg, torch.ones_like(pg))
+        lGl = self.cL1(fB, rB) * self.lambda_l1
+        lG  = lGg + lGl; lG.backward(); self.oG.step()
+        return {"loss_G":lG.item(),"loss_G_gan":lGg.item(),
+                "loss_G_l1":lGl.item(),"loss_D":lD.item()}
     @torch.no_grad()
-    def predict(self, inp: torch.Tensor) -> torch.Tensor:
-        """Inference — used by GeoAgent. Returns tensor in [-1, 1]."""
+    def predict(self, x):
         self.G.eval()
-        return self.G(inp.to(self.device))
+        return self.G(x.to(self.device))
+    def step_schedulers(self): self.sG.step(); self.sD.step()
+    def save(self, path):
+        torch.save({"G":self.G.state_dict(),"D":self.D.state_dict()}, path)
+        print("Saved:", path)
+    def load(self, path):
+        c = torch.load(path, map_location=self.device)
+        self.G.load_state_dict(c["G"]); self.D.load_state_dict(c["D"])
+        print("Loaded:", path)
 
-    def step_schedulers(self):
-        self.sched_G.step()
-        self.sched_D.step()
+def count_params(model):
+    return "  |  ".join(
+        "{}: {:.2f}M params".format(n, sum(p.numel() for p in net.parameters())/1e6)
+        for n, net in [("G", model.G), ("D", model.D)])
 
-    def save(self, path: str):
-        torch.save({"G": self.G.state_dict(), "D": self.D.state_dict()}, path)
-        print(f"[Pix2PixModel] Saved → {path}")
-
-    def load(self, path: str):
-        ckpt = torch.load(path, map_location=self.device)
-        self.G.load_state_dict(ckpt["G"])
-        self.D.load_state_dict(ckpt["D"])
-        print(f"[Pix2PixModel] Loaded ← {path}")
-
-
-def count_params(model) -> str:
-    nets = [model.G, model.D] if hasattr(model, "G") else [model]
-    names = ["G", "D"] if hasattr(model, "G") else ["model"]
-    out = []
-    for n, net in zip(names, nets):
-        total = sum(p.numel() for p in net.parameters())
-        out.append(f"{n}: {total/1e6:.2f}M params")
-    return "  |  ".join(out)
-
-
-if __name__ == "__main__":
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = Pix2PixModel(device=device)
-    print(count_params(model))
-
-    x = torch.randn(2, 3, 256, 256)
-    y = torch.randn(2, 3, 256, 256)
-    losses = model.train_step(x, y)
-    print("Losses:", {k: f"{v:.4f}" for k, v in losses.items()})
-    print("Model OK.")
