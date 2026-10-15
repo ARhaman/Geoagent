@@ -2,7 +2,7 @@
 
 Reliability-aware agentic framework with LLM orchestration for bidirectional reservoir property translation (facies <-> porosity, facies <-> permeability) on the Groningen gas field model.
 
-Accompanies the manuscript *"GeoAgent: A Reliability-Aware Agentic Framework with LLM Orchestration for Bidirectional Reservoir Property Translation"* (Al-Fakih; under revision, Applied Computing and Geosciences, ACAGS-D-26-00312; the title may change).
+Accompanies the manuscript *"GeoAgent: Reliability-Aware Reservoir Facies–Property Translation with LLM-Orchestrated Abstention and Auditing"* (Al-Fakih; under revision, Applied Computing and Geosciences, ACAGS-D-26-00312; the title may change).
 
 ## What this repository contains
 
