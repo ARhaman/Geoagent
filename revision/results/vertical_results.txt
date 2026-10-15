@@ -1,0 +1,24 @@
+D:\First year\Papers\GeoAgent\revision_ACAGS\vertical_eval.py:30: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:219.)
+  def tens(img): im = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).resize((256, 256), Image.BILINEAR); return (torch.from_numpy(np.asarray(im)).float().permute(2, 0, 1) / 255 - 0.5) / 0.5
+PorFac: 64 tiles valid in all 33 layers; using 10
+Loaded: D:\First year\Papers\GeoAgent\checkpoints\PorFac_AB\pix2pix_AB_ep0100.pth
+facies accuracy on these tiles (boundary-tolerant, TTAx8): 0.9496
+vertical agreement (same class at layer k and k+lag), pixels valid in both:
+  lag | TRUE | PRED | copy-adjacent-TRUE-layer baseline accuracy (lag 1 only)
+    1 | 0.6386 | 0.6355 | 0.6386
+    2 | 0.5834 | 0.5663
+    4 | 0.5771 | 0.5560
+    8 | 0.5719 | 0.5554
+CAVEAT: membership of layers 100-132 in the training split is not recorded in the dataset; values are therefore descriptive of vertical coherence, not held-out accuracy.
+D:\First year\Papers\GeoAgent\revision_ACAGS\vertical_eval.py:30: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:219.)
+  def tens(img): im = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).resize((256, 256), Image.BILINEAR); return (torch.from_numpy(np.asarray(im)).float().permute(2, 0, 1) / 255 - 0.5) / 0.5
+PermFac: 64 tiles valid in all 33 layers; using 10
+Loaded: D:\First year\Papers\GeoAgent\checkpoints\PermFac_AB\pix2pix_AB_ep0100.pth
+facies accuracy on these tiles (boundary-tolerant, TTAx8): 0.5631
+vertical agreement (same class at layer k and k+lag), pixels valid in both:
+  lag | TRUE | PRED | copy-adjacent-TRUE-layer baseline accuracy (lag 1 only)
+    1 | 0.6386 | 0.6718 | 0.6386
+    2 | 0.5834 | 0.6127
+    4 | 0.5771 | 0.5992
+    8 | 0.5719 | 0.5797
+CAVEAT: membership of layers 100-132 in the training split is not recorded in the dataset; values are therefore descriptive of vertical coherence, not held-out accuracy.

@@ -1,0 +1,9 @@
+{
+ "task": "PorFac",
+ "direction": "BA",
+ "lam": 300.0,
+ "val_risk_single": 0.011180390446791946,
+ "val_risk_tta8": 0.010969068819590783,
+ "ref_lam100_single": 0.011129527580829733,
+ "ref_lam100_tta8": 0.010767354194528662
+}

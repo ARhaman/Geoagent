@@ -4,8 +4,9 @@ __pycache__/
 *.pth
 checkpoints/
 data/
-results/
+/results/
 *.png
 !notebooks/**/*.png
+!revision/figures/*.png
 .ipynb_checkpoints/
 .DS_Store

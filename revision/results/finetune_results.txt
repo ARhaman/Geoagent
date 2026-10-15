@@ -1,0 +1,30 @@
+
+PorFac AB: test n=5835, hard test patches (base gate bottom 10%) = 584; base TTAx8 SSIM hard 0.8139 / rest 0.9727
+  budget 0.02  hard   (seeds=3): hard dSSIM -0.0127 [-0.0181,-0.0078] | rest -0.0019 [-0.0022,-0.0017] | bad on hard 16.4% -> 18.6%
+  budget 0.02  random (seeds=3): hard dSSIM -0.0014 [-0.0022,-0.0007] | rest -0.0000 [-0.0001,+0.0001] | bad on hard 16.4% -> 16.7%
+  budget 0.05  hard   (seeds=3): hard dSSIM -0.0053 [-0.0090,-0.0015] | rest -0.0015 [-0.0018,-0.0013] | bad on hard 16.4% -> 17.2%
+  budget 0.05  random (seeds=3): hard dSSIM +0.0001 [-0.0011,+0.0014] | rest +0.0001 [-0.0000,+0.0001] | bad on hard 16.4% -> 16.8%
+  budget 0.05  replay (seeds=3): hard dSSIM -0.0072 [-0.0092,-0.0052] | rest -0.0001 [-0.0002,+0.0000] | bad on hard 16.4% -> 17.5%
+
+PorFac BA: test n=5835, hard test patches (base gate bottom 10%) = 584; base TTAx8 SSIM hard 0.8354 / rest 0.9111
+  budget 0.02  hard   (seeds=3): hard dSSIM +0.0035 [+0.0014,+0.0057] | rest -0.0022 [-0.0025,-0.0019] | bad on hard 5.1% -> 3.6%
+  budget 0.02  random (seeds=3): hard dSSIM +0.0047 [+0.0017,+0.0077] | rest -0.0016 [-0.0018,-0.0014] | bad on hard 5.1% -> 3.7%
+  budget 0.05  hard   (seeds=3): hard dSSIM -0.0022 [-0.0049,+0.0004] | rest -0.0032 [-0.0036,-0.0029] | bad on hard 5.1% -> 4.6%
+  budget 0.05  random (seeds=3): hard dSSIM +0.0057 [+0.0020,+0.0092] | rest -0.0019 [-0.0021,-0.0017] | bad on hard 5.1% -> 3.6%
+  budget 0.05  replay (seeds=3): hard dSSIM +0.0071 [+0.0043,+0.0100] | rest -0.0008 [-0.0009,-0.0007] | bad on hard 5.1% -> 3.1%
+
+PermFac AB: test n=5835, hard test patches (base gate bottom 10%) = 584; base TTAx8 SSIM hard 0.6513 / rest 0.9409
+  budget 0.02  hard   (seeds=3): hard dSSIM +0.0507 [+0.0397,+0.0623] | rest -0.0023 [-0.0036,-0.0010] | bad on hard 54.3% -> 38.4%
+  budget 0.02  random (seeds=3): hard dSSIM +0.0318 [+0.0275,+0.0362] | rest +0.0031 [+0.0025,+0.0036] | bad on hard 54.3% -> 43.3%
+  budget 0.05  hard   (seeds=3): hard dSSIM +0.0579 [+0.0501,+0.0656] | rest +0.0016 [+0.0005,+0.0028] | bad on hard 54.3% -> 35.9%
+  budget 0.05  random (seeds=3): hard dSSIM +0.0339 [+0.0294,+0.0390] | rest +0.0061 [+0.0056,+0.0066] | bad on hard 54.3% -> 43.4%
+  budget 0.05  replay (seeds=3): hard dSSIM +0.0307 [+0.0267,+0.0350] | rest +0.0056 [+0.0052,+0.0061] | bad on hard 54.3% -> 43.6%
+  budget 0.1   hard   (seeds=1): hard dSSIM +0.0547 [+0.0478,+0.0616] | rest +0.0055 [+0.0046,+0.0064] | bad on hard 54.3% -> 36.0%
+  budget 0.1   random (seeds=1): hard dSSIM +0.0541 [+0.0468,+0.0614] | rest +0.0059 [+0.0051,+0.0066] | bad on hard 54.3% -> 35.8%
+
+PermFac BA: test n=5835, hard test patches (base gate bottom 10%) = 584; base TTAx8 SSIM hard 0.7540 / rest 0.8634
+  budget 0.02  hard   (seeds=3): hard dSSIM +0.0113 [+0.0101,+0.0125] | rest -0.0007 [-0.0010,-0.0003] | bad on hard 5.5% -> 4.6%
+  budget 0.02  random (seeds=3): hard dSSIM -0.0005 [-0.0014,+0.0005] | rest -0.0012 [-0.0015,-0.0010] | bad on hard 5.5% -> 4.9%
+  budget 0.05  hard   (seeds=3): hard dSSIM +0.0070 [+0.0056,+0.0086] | rest -0.0006 [-0.0010,-0.0003] | bad on hard 5.5% -> 3.5%
+  budget 0.05  random (seeds=3): hard dSSIM -0.0018 [-0.0028,-0.0007] | rest -0.0017 [-0.0019,-0.0014] | bad on hard 5.5% -> 5.4%
+  budget 0.05  replay (seeds=3): hard dSSIM +0.0008 [-0.0002,+0.0019] | rest -0.0012 [-0.0015,-0.0009] | bad on hard 5.5% -> 4.5%

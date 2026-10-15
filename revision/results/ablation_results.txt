@@ -1,0 +1,41 @@
+[risk: AB = 1 - boundary-tolerant facies accuracy ; BA = MAE (v/v or log10 mD); lower is better]
+
+PorFac AB (n=4984 test)
+  A static single-pass, deliver all : risk 0.0965
+  B + TTAx8 action, deliver all      : risk 0.0569  (B-A -0.0395 [-0.0410,-0.0380])
+  C gate, target coverage 90% (threshold from VAL): delivered 91.2% | delivered risk 0.0567 [0.0550,0.0586] vs A 0.0965 | abstained-patch risk 0.0593
+  C gate, target coverage 80% (threshold from VAL): delivered 80.9% | delivered risk 0.0579 [0.0559,0.0600] vs A 0.0965 | abstained-patch risk 0.0530
+  C gate, target coverage 70% (threshold from VAL): delivered 70.1% | delivered risk 0.0576 [0.0554,0.0602] vs A 0.0965 | abstained-patch risk 0.0553
+  D risk-controlled (target 0.0512 from VAL): TEST delivered 39.5% | TEST delivered risk 0.0484 (target met)
+
+PorFac BA (n=4928 test)
+  A static single-pass, deliver all : risk 0.0111
+  B + TTAx8 action, deliver all      : risk 0.0107  (B-A -0.0004 [-0.0005,-0.0004])
+  C gate, target coverage 90% (threshold from VAL): delivered 91.2% | delivered risk 0.0103 [0.0103,0.0104] vs A 0.0111 | abstained-patch risk 0.0140
+  C gate, target coverage 80% (threshold from VAL): delivered 79.4% | delivered risk 0.0101 [0.0100,0.0102] vs A 0.0111 | abstained-patch risk 0.0127
+  C gate, target coverage 70% (threshold from VAL): delivered 68.3% | delivered risk 0.0100 [0.0099,0.0100] vs A 0.0111 | abstained-patch risk 0.0121
+  D risk-controlled (target 0.0092): no threshold on VAL reaches the target
+  sensitivity: MAE INCLUDING saturated pixels: single 0.0095 | TTAx8 0.0089
+
+PermFac AB (n=4975 test)
+  A static single-pass, deliver all : risk 0.1688
+  B + TTAx8 action, deliver all      : risk 0.1403  (B-A -0.0285 [-0.0299,-0.0271])
+  C gate, target coverage 90% (threshold from VAL): delivered 88.1% | delivered risk 0.1390 [0.1352,0.1428] vs A 0.1688 | abstained-patch risk 0.1500
+  C gate, target coverage 80% (threshold from VAL): delivered 77.2% | delivered risk 0.1327 [0.1288,0.1368] vs A 0.1688 | abstained-patch risk 0.1660
+  C gate, target coverage 70% (threshold from VAL): delivered 67.4% | delivered risk 0.1232 [0.1189,0.1277] vs A 0.1688 | abstained-patch risk 0.1756
+  D risk-controlled (target 0.1133 from VAL): TEST delivered 61.9% | TEST delivered risk 0.1155 (target NOT met on test)
+
+PermFac BA (n=4975 test)
+  A static single-pass, deliver all : risk 0.2915
+  B + TTAx8 action, deliver all      : risk 0.2535  (B-A -0.0380 [-0.0390,-0.0369])
+  C gate, target coverage 90% (threshold from VAL): delivered 87.5% | delivered risk 0.2487 [0.2469,0.2504] vs A 0.2915 | abstained-patch risk 0.2872
+  C gate, target coverage 80% (threshold from VAL): delivered 77.9% | delivered risk 0.2477 [0.2456,0.2496] vs A 0.2915 | abstained-patch risk 0.2742
+  C gate, target coverage 70% (threshold from VAL): delivered 66.6% | delivered risk 0.2482 [0.2461,0.2503] vs A 0.2915 | abstained-patch risk 0.2641
+  D risk-controlled (target 0.2150): no threshold on VAL reaches the target
+  sensitivity: MAE INCLUDING saturated pixels: single 0.2978 | TTAx8 0.2594
+
+E gated learning (mean over seeds of deployed dRisk on test; from gated\):
+  PorFac AB: accepted 0/3 | deployed dRisk (all patches) +0.0000
+  PorFac BA: accepted 3/3 | deployed dRisk (all patches) -0.0002
+  PermFac AB: accepted 0/3 | deployed dRisk (all patches) +0.0000
+  PermFac BA: accepted 2/3 | deployed dRisk (all patches) -0.0014

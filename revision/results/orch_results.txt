@@ -1,0 +1,16 @@
+
+PorFac AB: 62 decisions | policy fidelity all 100.0% | random 100.0% | near-threshold 100.0% | tool-call correct 100.0% | repeat-consistency 100.0% (n=30)
+  geologic risk by LLM action (mean, n): {'review': (0.0524, 12), 'accept': (0.0806, 14), 'abstain': (0.074, 5)}
+  audit report: 100.0% of 10 numbers traceable to the tool output
+
+PorFac BA: 60 decisions | policy fidelity all 100.0% | random 100.0% | near-threshold 100.0% | tool-call correct 100.0% | repeat-consistency 100.0% (n=30)
+  geologic risk by LLM action (mean, n): {'accept': (0.0104, 15), 'review': (0.0114, 11), 'abstain': (0.0102, 3)}
+  audit report: 100.0% of 10 numbers traceable to the tool output
+
+PermFac AB: 60 decisions | policy fidelity all 100.0% | random 100.0% | near-threshold 100.0% | tool-call correct 100.0% | repeat-consistency 100.0% (n=30)
+  geologic risk by LLM action (mean, n): {'review': (0.1892, 11), 'accept': (0.1785, 12), 'abstain': (0.1283, 4)}
+  audit report: 100.0% of 12 numbers traceable to the tool output
+
+PermFac BA: 60 decisions | policy fidelity all 100.0% | random 100.0% | near-threshold 100.0% | tool-call correct 100.0% | repeat-consistency 100.0% (n=30)
+  geologic risk by LLM action (mean, n): {'accept': (0.2719, 14), 'review': (0.2329, 5), 'abstain': (0.2673, 6)}
+  audit report: 100.0% of 12 numbers traceable to the tool output

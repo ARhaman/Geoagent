@@ -1,0 +1,9 @@
+{
+ "task": "PermFac",
+ "direction": "AB",
+ "lam": 300.0,
+ "val_risk_single": 0.150148234984131,
+ "val_risk_tta8": 0.11901746275688233,
+ "ref_lam100_single": 0.16340435740145146,
+ "ref_lam100_tta8": 0.13329498614152954
+}

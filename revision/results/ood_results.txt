@@ -1,0 +1,64 @@
+Loaded: D:\First year\Papers\GeoAgent\checkpoints\PorFac_AB\pix2pix_AB_ep0100.pth
+[PairedGeoDataset] Loaded 27135 images from 'E:\2D Dutch's Dataset\patches_512\PorFac\train'  | direction=AB | size=256×256
+[PairedGeoDataset] Loaded 5805 images from 'E:\2D Dutch's Dataset\patches_512\PorFac\val'  | direction=AB | size=256×256
+[PairedGeoDataset] Loaded 5835 images from 'E:\2D Dutch's Dataset\patches_512\PorFac\test'  | direction=AB | size=256×256
+
+PorFac AB: in-distribution TEST (n=4984)  Spearman with risk: consistency -0.253 | OOD distance +0.317 | combined -0.327
+  delivered risk (all patches 0.0569) at coverage 90/80/70%:  consistency 0.0568/0.0579/0.0576 | OOD 0.0552/0.0536/0.0520 | combined 0.0559/0.0549/0.0540 | 
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFac\K'  | direction=AB | size=256×256
+  shift set PorFac-K: n=500 risk 0.0559 | flagged: consistency 26% | OOD 96% | either 97% | risk kept 0.1110 vs flagged 0.0540 | Spearman(OOD,risk) -0.37
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFac\I'  | direction=AB | size=256×256
+  shift set PorFac-I: n=500 risk 0.1414 | flagged: consistency 1% | OOD 100% | either 100% | risk kept nan vs flagged 0.1414 | Spearman(OOD,risk) +0.24
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFac\J'  | direction=AB | size=256×256
+  shift set PorFac-J: n=500 risk 0.1347 | flagged: consistency 0% | OOD 100% | either 100% | risk kept nan vs flagged 0.1347 | Spearman(OOD,risk) +0.34
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFacN\K'  | direction=AB | size=256×256
+  shift set PorFacN-K: n=500 risk 0.1843 | flagged: consistency 47% | OOD 69% | either 70% | risk kept 0.0691 vs flagged 0.2333 | Spearman(OOD,risk) +0.50
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFacN\I'  | direction=AB | size=256×256
+  shift set PorFacN-I: n=500 risk 0.6369 | flagged: consistency 20% | OOD 100% | either 100% | risk kept nan vs flagged 0.6369 | Spearman(OOD,risk) -0.63
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFacN\J'  | direction=AB | size=256×256
+  shift set PorFacN-J: n=500 risk 0.6058 | flagged: consistency 22% | OOD 100% | either 100% | risk kept nan vs flagged 0.6058 | Spearman(OOD,risk) -0.67
+Loaded: D:\First year\Papers\GeoAgent\checkpoints\PorFac_BA\pix2pix_BA_ep0100.pth
+[PairedGeoDataset] Loaded 27135 images from 'E:\2D Dutch's Dataset\patches_512\PorFac\train'  | direction=BA | size=256×256
+[PairedGeoDataset] Loaded 5805 images from 'E:\2D Dutch's Dataset\patches_512\PorFac\val'  | direction=BA | size=256×256
+[PairedGeoDataset] Loaded 5835 images from 'E:\2D Dutch's Dataset\patches_512\PorFac\test'  | direction=BA | size=256×256
+
+PorFac BA: in-distribution TEST (n=4928)  Spearman with risk: consistency -0.406 | OOD distance -0.184 | combined -0.135
+  delivered risk (all patches 0.0107) at coverage 90/80/70%:  consistency 0.0103/0.0101/0.0100 | OOD 0.0107/0.0108/0.0108 | combined 0.0104/0.0103/0.0103 | 
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFac\K'  | direction=BA | size=256×256
+  shift set PorFac-K: n=498 risk 0.0300 | flagged: consistency 0% | OOD 32% | either 32% | risk kept 0.0317 vs flagged 0.0264 | Spearman(OOD,risk) -0.65
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFac\I'  | direction=BA | size=256×256
+  shift set PorFac-I: n=500 risk 0.0265 | flagged: consistency 82% | OOD 100% | either 100% | risk kept 0.0360 vs flagged 0.0264 | Spearman(OOD,risk) -0.76
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFac\J'  | direction=BA | size=256×256
+  shift set PorFac-J: n=500 risk 0.0259 | flagged: consistency 77% | OOD 99% | either 99% | risk kept 0.0377 vs flagged 0.0259 | Spearman(OOD,risk) -0.76
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFacN\K'  | direction=BA | size=256×256
+  shift set PorFacN-K: n=500 risk 0.0150 | flagged: consistency 0% | OOD 32% | either 32% | risk kept 0.0135 vs flagged 0.0182 | Spearman(OOD,risk) +0.42
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFacN\I'  | direction=BA | size=256×256
+  shift set PorFacN-I: n=500 risk 0.0113 | flagged: consistency 82% | OOD 100% | either 100% | risk kept 0.0140 vs flagged 0.0113 | Spearman(OOD,risk) -0.63
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PorFacN\J'  | direction=BA | size=256×256
+  shift set PorFacN-J: n=500 risk 0.0113 | flagged: consistency 77% | OOD 99% | either 99% | risk kept 0.0138 vs flagged 0.0113 | Spearman(OOD,risk) -0.47
+Loaded: D:\First year\Papers\GeoAgent\checkpoints\PermFac_AB\pix2pix_AB_ep0100.pth
+[PairedGeoDataset] Loaded 27120 images from 'E:\2D Dutch's Dataset\patches_512\PermFac\train'  | direction=AB | size=256×256
+[PairedGeoDataset] Loaded 5805 images from 'E:\2D Dutch's Dataset\patches_512\PermFac\val'  | direction=AB | size=256×256
+[PairedGeoDataset] Loaded 5835 images from 'E:\2D Dutch's Dataset\patches_512\PermFac\test'  | direction=AB | size=256×256
+
+PermFac AB: in-distribution TEST (n=4975)  Spearman with risk: consistency -0.524 | OOD distance +0.266 | combined -0.455
+  delivered risk (all patches 0.1403) at coverage 90/80/70%:  consistency 0.1403/0.1347/0.1263 | OOD 0.1375/0.1339/0.1290 | combined 0.1354/0.1301/0.1228 | 
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PermFacN\K'  | direction=AB | size=256×256
+  shift set PermFacN-K: n=500 risk 0.2229 | flagged: consistency 37% | OOD 100% | either 100% | risk kept nan vs flagged 0.2229 | Spearman(OOD,risk) -0.39
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PermFacN\I'  | direction=AB | size=256×256
+  shift set PermFacN-I: n=500 risk 0.2785 | flagged: consistency 25% | OOD 100% | either 100% | risk kept nan vs flagged 0.2785 | Spearman(OOD,risk) +0.24
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PermFacN\J'  | direction=AB | size=256×256
+  shift set PermFacN-J: n=500 risk 0.3119 | flagged: consistency 30% | OOD 100% | either 100% | risk kept nan vs flagged 0.3119 | Spearman(OOD,risk) +0.18
+Loaded: D:\First year\Papers\GeoAgent\checkpoints\PermFac_BA\pix2pix_BA_ep0100.pth
+[PairedGeoDataset] Loaded 27120 images from 'E:\2D Dutch's Dataset\patches_512\PermFac\train'  | direction=BA | size=256×256
+[PairedGeoDataset] Loaded 5805 images from 'E:\2D Dutch's Dataset\patches_512\PermFac\val'  | direction=BA | size=256×256
+[PairedGeoDataset] Loaded 5835 images from 'E:\2D Dutch's Dataset\patches_512\PermFac\test'  | direction=BA | size=256×256
+
+PermFac BA: in-distribution TEST (n=4975)  Spearman with risk: consistency -0.145 | OOD distance -0.391 | combined +0.160
+  delivered risk (all patches 0.2535) at coverage 90/80/70%:  consistency 0.2492/0.2476/0.2477 | OOD 0.2573/0.2610/0.2648 | combined 0.2548/0.2566/0.2586 | 
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PermFacN\K'  | direction=BA | size=256×256
+  shift set PermFacN-K: n=500 risk 0.2367 | flagged: consistency 21% | OOD 70% | either 76% | risk kept 0.2833 vs flagged 0.2217 | Spearman(OOD,risk) -0.54
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PermFacN\I'  | direction=BA | size=256×256
+  shift set PermFacN-I: n=500 risk 0.2589 | flagged: consistency 10% | OOD 100% | either 100% | risk kept nan vs flagged 0.2589 | Spearman(OOD,risk) +0.45
+[PairedGeoDataset] Loaded 500 images from 'D:\First year\Papers\GeoAgent\revision_ACAGS\shift\PermFacN\J'  | direction=BA | size=256×256
+  shift set PermFacN-J: n=500 risk 0.2548 | flagged: consistency 8% | OOD 100% | either 100% | risk kept 0.2007 vs flagged 0.2549 | Spearman(OOD,risk) +0.40
