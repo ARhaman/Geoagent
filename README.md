@@ -35,7 +35,7 @@ notebooks/  original end-to-end notebooks
 
 ## Data
 
-The Groningen static model is openly available (NAM, 2020; EPOS-NL): <https://doi.org/10.24416/UU01-1QH0MW>. The rendered paired-image datasets are not redistributed; they are available from the corresponding author on reasonable request. Note: rendered property images are normalised per layer, so property errors are in colour-scale units, and the dataset does not record which depth layers belong to which split.
+The Groningen static model is openly available (NAM, 2020; EPOS-NL): <https://doi.org/10.24416/UU01-1QH0MW>. The full-field rendered paired-image datasets are openly available on Zenodo (Original Datasets: <https://doi.org/10.5281/zenodo.14603410>; GeoPix code archive: <https://doi.org/10.5281/zenodo.14639446>); patches are obtained from them by the tiling in `MODELS_AND_DATA.md`. Note: rendered property images are normalised per layer, so property errors are in colour-scale units, and the dataset does not record which depth layers belong to which split.
 
 ## Checkpoints
 
@@ -56,3 +56,7 @@ MIT, see `LICENSE`.
 ## Contact
 
 Abdulrahman Al-Fakih, Center for Integrative Petroleum Research, King Fahd University of Petroleum and Minerals.
+
+## Checkpoints and data
+
+Trained checkpoints (release assets), their SHA-256 checksums, and the dataset and split description are in [MODELS_AND_DATA.md](MODELS_AND_DATA.md).
