@@ -39,7 +39,7 @@ The Groningen static model is openly available (NAM, 2020; EPOS-NL): <https://do
 
 ## Checkpoints
 
-Checkpoints (`pix2pix_{AB,BA}_ep0100.pth`) load with `src/geoagent_model.py` (layer names e1..e8, d1..d8). An earlier version of this file used different layer names and could not load them.
+Checkpoints (`geoagent_{PorFac,PermFac}_{AB,BA}_ep100.pth`, release `acags-revision`) load with `src/geoagent_model.py` (layer names e1..e8, d1..d8); see `MODELS_AND_DATA.md` for checksums and a loading example.
 
 ## Running the revision scripts
 
